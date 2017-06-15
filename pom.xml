@@ -9,12 +9,12 @@
 	<packaging>jar</packaging>
 
 	<name>graphast-api</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Graphast Api</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.4.RELEASE</version>
+		<version>1.5.2.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -27,17 +27,13 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-neo4j</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+		<!-- graphast-core -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<groupId>org.graphast</groupId>
+			<artifactId>graphast-core</artifactId>
+			<version>0.1.9</version>
 		</dependency>
 	</dependencies>
 
@@ -49,6 +45,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	
 
 </project>
