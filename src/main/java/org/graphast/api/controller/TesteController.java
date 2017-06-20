@@ -4,11 +4,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class Teste {
+public class TesteController {
 	
 	@GetMapping("/")
 	public String index(){
 		
-		return "Hello 1";
+		return "Teste Spring";
 	}
 }
