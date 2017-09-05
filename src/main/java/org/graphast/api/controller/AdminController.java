@@ -1,45 +1,56 @@
 package org.graphast.api.controller;
 
+import java.net.URI;
 import java.util.List;
-import java.util.Map;
 
 import org.graphast.app.GraphInfo;
 import org.graphast.app.GraphService;
 import org.graphast.config.Configuration;
-import org.graphast.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
+@RequestMapping("/admin")
 public class AdminController {
+	
+	public Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	private GraphService service = new GraphService();
 	
-	@PostMapping("/create")
-	public GraphInfo create(@RequestParam Map<String, String> params) {
-		System.out.println("Create");
-		GraphInfo graphInfo = new GraphInfo();
-		graphInfo.setAppName(params.get("app"));
-		graphInfo.setCosts(params.get("costs"));
-		graphInfo.setGraphDir(params.get("dir"));
-		graphInfo.setImporter(params.get("importer"));
-		graphInfo.setNetwork(params.get("network"));
-		graphInfo.setPoiCategoryFilter(StringUtils.splitIntToList(",", params.get("poi-category-filter")));
-		graphInfo.setPois(params.get("pois"));
-		graphInfo.setQueryServices(params.get("query-services"));
+
+	@PostMapping
+	public ResponseEntity<GraphInfo> create(@RequestBody GraphInfo graphInfo ) {
+		
+		double initialTime = System.currentTimeMillis();
+		
 		service.create(graphInfo);
-		return graphInfo;
+		
+		double finallTime = System.currentTimeMillis();
+		double totalTime = finallTime - initialTime; 
+		logger.info("Total time: {}", totalTime);
+		
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{app}").buildAndExpand(graphInfo.getAppName()).toUri();
+		return ResponseEntity.created(uri).body(graphInfo);
 	}
 	
-	@GetMapping("/load/{app}")
-	public GraphInfo load(@PathVariable String app) {
-		return service.load(app);
+	@GetMapping("/{app}")
+	public ResponseEntity<GraphInfo> load(@PathVariable String app) {
+		GraphInfo graph = service.load(app);	
+		if(graph == null)
+			return ResponseEntity.notFound().build();
+		
+		return ResponseEntity.ok(graph);
 	}
 	
-	@GetMapping("/apps")
+	@GetMapping
 	public List<String> appNames() {
 		return Configuration.getAppNames();
 	}
