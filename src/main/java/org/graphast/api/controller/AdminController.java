@@ -8,7 +8,9 @@ import org.graphast.app.GraphService;
 import org.graphast.config.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,7 +53,15 @@ public class AdminController {
 	}
 	
 	@GetMapping
-	public List<String> appNames() {
-		return Configuration.getAppNames();
+	public ResponseEntity<List<String>> appNames() {
+		return ResponseEntity.ok(Configuration.getAppNames());
+	}
+	
+	@DeleteMapping("/{app}")
+	public ResponseEntity<HttpStatus> delete(@PathVariable String app) {
+		logger.info("delete {}", app);
+		service.delete(app);
+		logger.info("Application " + app + " removed successfully");
+		return ResponseEntity.noContent().build();
 	}
 }
