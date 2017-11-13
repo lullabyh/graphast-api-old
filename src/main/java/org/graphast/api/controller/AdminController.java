@@ -26,7 +26,6 @@ public class AdminController {
 	public Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	private GraphService service = new GraphService();
-	
 
 	@PostMapping
 	public ResponseEntity<GraphInfo> create(@RequestBody GraphInfo graphInfo ) {
@@ -51,6 +50,12 @@ public class AdminController {
 		
 		return ResponseEntity.ok(graph);
 	}
+
+	@GetMapping("/apps")
+	public ResponseEntity<List<GraphInfo>> apps() {
+		logger.debug("apps");
+		return ResponseEntity.ok(Configuration.getApps());
+	}
 	
 	@GetMapping
 	public ResponseEntity<List<String>> appNames() {
@@ -59,9 +64,9 @@ public class AdminController {
 	
 	@DeleteMapping("/{app}")
 	public ResponseEntity<HttpStatus> delete(@PathVariable String app) {
-		logger.info("delete {}", app);
+		logger.debug("delete {}", app);
 		service.delete(app);
-		logger.info("Application " + app + " removed successfully");
+		logger.debug("Application " + app + " removed successfully");
 		return ResponseEntity.noContent().build();
 	}
 }

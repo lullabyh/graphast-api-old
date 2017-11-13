@@ -37,11 +37,11 @@ public class ShortestPathController {
 		
 		AbstractShortestPathService sp = new DijkstraConstantWeight(graph);
 		
-		log.info("Calculando path ");
+		log.info("Calculating the path ");
 		long source = graph.getNodeId(lat1, long1);
 		long target = graph.getNodeId(lat2, long2);
 		Path path = sp.shortestPath(source, target);
-		log.info("Calculo terminado. . . ");
+		log.info("Calculo terminado...");
 		return ResponseEntity.ok(path);
 	}
 }
