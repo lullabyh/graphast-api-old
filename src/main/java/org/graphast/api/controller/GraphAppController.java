@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-@RequestMapping("/admin")
-public class AdminController {
+@RequestMapping("/graphApp")
+public class GraphAppController {
 	
 	public Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -51,13 +51,13 @@ public class AdminController {
 		return ResponseEntity.ok(graph);
 	}
 
-	@GetMapping("/apps")
+	@GetMapping
 	public ResponseEntity<List<GraphInfo>> apps() {
 		logger.debug("apps");
 		return ResponseEntity.ok(Configuration.getApps());
 	}
 	
-	@GetMapping
+	@GetMapping("/appNames")
 	public ResponseEntity<List<String>> appNames() {
 		return ResponseEntity.ok(Configuration.getAppNames());
 	}
