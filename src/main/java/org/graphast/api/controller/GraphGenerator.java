@@ -7,9 +7,9 @@ import org.graphast.model.GraphImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -19,8 +19,8 @@ public class GraphGenerator {
 	@Autowired
 	private MapGraph mapGraph;
 
-	@PostMapping
-	public ResponseEntity<String> createGraph(@RequestParam("nameGraph") String nameGraph) {
+	@PostMapping("{nameGraph}")
+	public ResponseEntity<String> createGraph(@PathVariable("nameGraph") String nameGraph) {
 		Graph graph = new GraphImpl(Configuration.USER_HOME + "/graphast/" + nameGraph);
 		mapGraph.getMapGraph().put(nameGraph, graph);
 
